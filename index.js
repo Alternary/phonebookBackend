@@ -4,29 +4,6 @@ const Person = require('./models/person')
 
 const app = express()
 
-// let persons = [
-//   {
-//     "name": "Arto Hellas",
-//     "number": "040-123456",
-//     "id": "1"
-//   },
-//   {
-//     "name": "Ada Lovelace",
-//     "number": "39-44-5323523",
-//     "id": "2"
-//   },
-//   {
-//     "name": "Dan Abramov",
-//     "number": "12-43-234345",
-//     "id": "3"
-//   },
-//   {
-//     "name": "Mary Poppendieck",
-//     "number": "39-23-6423122",
-//     "id": "4"
-//   }
-// ]
-
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
 
@@ -85,11 +62,7 @@ app.get('/api/persons/:id', (request, response, next) => {
         response.status(404).end()
       }
     })
-    .catch(error => next(error)) /*{
-      console.log("\n\nAND HERE\n\n")
-      console.log(error)
-      response.status(400).send({ error: 'malformatted id' })
-    })*/
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
@@ -98,45 +71,15 @@ app.delete('/api/persons/:id', (request, response, next) => {
       response.status(204).end()
     })
     .catch(error => next(error))
-  // const id = request.params.id
-  // persons = persons.filter(person => person.id !== id)
-
-  // response.status(204).end()
 })
-
-// const generateId = () => {
-//   const maxId = persons.length > 0
-//     ? Math.max(...persons.map(n => Number(n.id)))
-//     : 0
-//   return String(maxId + 1)
-// }
 
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
-  // if (!body.name) {
-  //   return response.status(400).json({ 
-  //     error: 'name missing' 
-  //   })
-  // }
-  // if (!body.number) {
-  //   return response.status(400).json({ 
-  //     error: 'number missing' 
-  //   })
-  // }
-  // if (persons.map(p => p.name).includes(body.name)) {
-  //   return response.status(409).json({ 
-  //     error: 'name must be unique' 
-  //   })
-  // }
 
   const person = new Person({
     name: body.name,
     number: body.number,
-    // id: generateId(),
   })
-
-  // persons = persons.concat(person)
-
   person.save().then(savedPerson => {
       response.json(savedPerson)
     })
